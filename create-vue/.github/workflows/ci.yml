@@ -1,0 +1,48 @@
+name: 'ci'
+on:
+  push:
+    branches:
+      - '**'
+    paths-ignore:
+      - README.md
+      - CONTRIBUTING.md
+  pull_request:
+    branches:
+      - '**'
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.os == 'windows-latest' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+        node-version:
+          - 16
+        include:
+          - node-version: 14
+            os: ubuntu-latest
+          # Node.js 17 support is a known issue in Cypress
+          # Comment it out until <https://github.com/cypress-io/cypress/issues/19600> is resolved
+          # - node-version: 17
+          #   os: ubuntu-latest
+    name: Node ${{ matrix.node-version }} on ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm pretest
+      # Rerun install to ensure the dependencies in the playground apps are resolved correctly
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm test
