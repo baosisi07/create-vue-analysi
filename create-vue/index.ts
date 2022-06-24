@@ -45,7 +45,7 @@ function emptyDir(dir) {
 
 async function init() {
   console.log(`\n${banner}\n`)
-
+  // 获取进程的当前目录
   const cwd = process.cwd()
   // possible options:
   // --default
