@@ -52,5 +52,8 @@
     "*.{js,ts,vue,json}": [
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "vue": "^3.2.31"
   }
 }

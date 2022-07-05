@@ -16,7 +16,10 @@ importers:
       npm-run-all: ^4.1.5
       prettier: ^2.7.1
       prompts: ^2.4.2
+      vue: ^3.2.31
       zx: ^4.3.0
+    dependencies:
+      vue: 3.2.37
     devDependencies:
       '@types/eslint': 8.4.3
       '@types/prompts': 2.0.14
@@ -4000,7 +4003,7 @@ packages:
     dev: true
 
   /fsevents/2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+    resolution: {integrity: sha1-ilJveLj99GI7cJ4Ll1xSwkwC/Ro=}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true

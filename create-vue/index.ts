@@ -68,7 +68,7 @@ async function init() {
     // all arguments are treated as booleans
     boolean: true
   })
-
+  console.log(argv)
   // if any of the feature flags is set, we would skip the feature prompts
   const isFeatureFlagsUsed =
     typeof (
@@ -82,7 +82,8 @@ async function init() {
       argv.cypress ??
       argv.eslint
     ) === 'boolean'
-
+    console.log(isFeatureFlagsUsed)
+  // 取命令行的第一个参数 即project-name
   let targetDir = argv._[0]
   const defaultProjectName = !targetDir ? 'vue-project' : targetDir
 
@@ -121,7 +122,7 @@ async function init() {
           type: targetDir ? null : 'text',
           message: 'Project name:',
           initial: defaultProjectName,
-          onState: (state) => (targetDir = String(state.value).trim() || defaultProjectName)
+          onState: (state) => (targetDir = String(state.value).trim() || defaultProjectName) // 状态变化的回调
         },
         {
           name: 'shouldOverwrite',
@@ -387,6 +388,7 @@ async function init() {
   // Note: until <https://github.com/pnpm/pnpm/issues/3505> is resolved,
   // it is not possible to tell if the command is called by `pnpm init`.
   const userAgent = process.env.npm_config_user_agent ?? ''
+  console.log(process.env, process.env.npm_config_user_agent)
   const packageManager = /pnpm/.test(userAgent) ? 'pnpm' : /yarn/.test(userAgent) ? 'yarn' : 'npm'
 
   // README generation

@@ -14,15 +14,22 @@ import sortDependencies from './sortDependencies'
  * @param {string} dest destination filename of the copy operation
  */
 function renderTemplate(src, dest) {
+  // 检查文件是否存在 
   const stats = fs.statSync(src)
-
+  // 是否为目录
   if (stats.isDirectory()) {
     // skip node_module
+    // path.basename(src)返回路径最后一部分
+    // path.basename('/foo/bar/baz/asdf/quux.html');
+    // Returns: 'quux.html'
+    //path.basename('/foo/bar/baz/asdf/quux.html', '.html');
+    // Returns: 'quux'
     if (path.basename(src) === 'node_modules') {
       return
     }
 
     // if it's a directory, render its subdirectories and files recursively
+    // recursive不为true时，默认false，创建已存在的目录会报错
     fs.mkdirSync(dest, { recursive: true })
     for (const file of fs.readdirSync(src)) {
       renderTemplate(path.resolve(src, file), path.resolve(dest, file))
@@ -31,7 +38,7 @@ function renderTemplate(src, dest) {
   }
 
   const filename = path.basename(src)
-
+  // fs.existsSync() 文件是否存在
   if (filename === 'package.json' && fs.existsSync(dest)) {
     // merge instead of overwriting
     const existing = JSON.parse(fs.readFileSync(dest, 'utf8'))
@@ -43,6 +50,7 @@ function renderTemplate(src, dest) {
 
   if (filename.startsWith('_')) {
     // rename `_file` to `.file`
+    // path.dirname()返回目录路径
     dest = path.resolve(path.dirname(dest), filename.replace(/^_/, '.'))
   }
 
